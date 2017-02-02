@@ -124,6 +124,11 @@ export default class EmailTemplate {
       if (!style) return html
       if (this.options.disableJuice) return html
       if (this.options.juiceOptions) {
+        if (this.options.juiceOptions.preserveMediaQueries || this.options.juiceOptions.preserveFontFaces) {
+            debug('Preserving Media Queries And/Or Font Faces')
+            this.options.juiceOptions.insertPreservedExtraCss = true
+            this.options.juiceOptions.extraCss = this.options.juiceOptions.extraCss ? this.options.juiceOptions.extraCss + '\n' + style : style
+        }
         debug('Using juice options ', this.options.juiceOptions)
       }
       return juice.inlineContent(html, style, this.options.juiceOptions || {})
